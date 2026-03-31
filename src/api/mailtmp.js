@@ -26,5 +26,19 @@ export const login = async (address, password) => {
     body: JSON.stringify({ address, password }),
   });
 
-  return response.json();
+  const data = await response.json();
+  return data.token;
+};
+
+export const getMessages = async (token) => {
+  console.log('Отправляю запрос за письмами с токеном:', token.substring(0, 10) + '...');
+  const response = await fetch(`${BASE_URL}/messages`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  const data = await response.json();
+  console.log('Ответ сервера (полный):', data); // ПОСМОТРИМ, ЧТО ТАМ
+  return data['hydra:member'];
 };
